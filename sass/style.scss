@@ -10,6 +10,11 @@ ul {
   -webkit-padding-start: 0;
   list-style: none;
 }
+// 背景指定
+@mixin img_bg($animal) {
+  background: url(../images/img_#{$animal}.png) no-repeat;
+  background-size: 100% auto;
+}
 /******************************************************************************************************************************
    
 ******************************************************************************************************************************/
@@ -32,31 +37,25 @@ html, body {
   top: 10px;
 }
 
-.box_1 {
+.img_1 {
+  @include img_bg(lion);
   position: fixed;
-  top: 20%;
+  top: 10%;
   left: 50%;
-  width: 100px;
-  height: 100px;
-  background: #5A81EE;
 }
 
-.box_2 {
+.img_2 {
+  @include img_bg(pig);
   position: fixed;
-  top: 20%;
+  top: 0%;
   right: 10%;
-  width: 100px;
-  height: 100px;
-  background: #F00;
 }
 
-.box_3 {
+.img_3 {
+  @include img_bg(kapibara);
   position: fixed;
-  top: 20%;
+  top: 0%;
   right: 10%;
-  width: 100px;
-  height: 100px;
-  background: #000;
 }
 
 

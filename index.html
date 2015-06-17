@@ -10,22 +10,23 @@
 
 <p class="num">スクロールの値 | <span id="scrollValue">0</span></p>
 
-<div class="box_1"
-data-1000="opacity: 0; zoom: 0;"
-data-4000="opacity: 1; zoom: 1; left: 10%;"
-data-8000="opacity: 0; zoom: 10; top:20%; left: 10%;"
+<div class="img_box img_1"
+data-1000="opacity: 0; zoom: 0;  top:4%;"
+data-2000="opacity: 0.99; zoom: 0.8;  top:4%;"
+data-4000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
+data-4900="opacity: 0; zoom: 10; top:20%; left: 100%;"
 ></div>
 
-<div class="box_2"
-data-12000="opacity: 0; zoom: 0;"
-data-14000="opacity: 1; zoom: 1; right: 10%;"
-data-16000="opacity: 0; zoom: 10; right: 0%;"
+<div class="img_box img_2"
+data-7000= "opacity: 0; zoom: 0;  top:0%;"
+data-9000= "opacity: 1; zoom: 1;  top:10%; right: 10%;"
+data-10000="opacity: 0; zoom: 10; top:20%; right: 100%;"
 ></div>
 
-<div class="box_3"
-data-18000="opacity: 0; zoom: 0;"
-data-20000="opacity: 1; zoom: 2; left: 0%;"
-data-22000="opacity: 0; zoom: 10; left: 50%;"
+<div class="img_box img_3"
+data-9000= "opacity: 0; zoom: 0;  top:0%;"
+data-11000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
+data-13000="opacity: 0; zoom: 10; top:20%; left: 100%;"
 ></div>
 
 </body>
@@ -41,6 +42,20 @@ $(function() {
         var value = $(this).scrollTop(); //スクロールの値を取得
         $('#scrollValue').text(value);
     });
+});
+</script>
+<script>
+$(document).ready(function(){
+    var wW = $(window).width(); 
+    var wH = $(window).height(); 
+    var divW = $('.img_box').innerWidth();
+    var divH = $('.img_box').innerHeight();
+    if(wW > divW){
+      $('.img_box').css('width',wW*0.8+'px'); 
+    }
+    if(wH > divH){
+      $('.img_box').css('height',wH*0.8+'px'); 
+    }
 });
 </script>
 <script>
