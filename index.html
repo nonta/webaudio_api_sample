@@ -115,19 +115,10 @@ data-23000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 <script type="text/javascript" src="js/skrollr.js"></script>
 
 
-
-<style>
-/*
-.sound-box{
-  width: 70px;
-  position: fixed;
-  left: 0;
-}
-*/
-</style>
 <script>
-// http://stackoverflow.com/questions/10365335/decodeaudiodata-returning-a-null-error
+// sound管理
 var MyAudio = (function(global){
+  // web audio api
   var AudioContext = webkitAudioContext || AudioContext;
 
   function MyAudio(buffer){
@@ -143,6 +134,7 @@ var MyAudio = (function(global){
   }
   var context = MyAudio.context = new AudioContext();
 
+  // soundファイル取得
   function loadFile(url){
     return new Promise(function(resolve, reject){
       var xhr = new XMLHttpRequest();
@@ -157,6 +149,7 @@ var MyAudio = (function(global){
       xhr.send();
     });
   }
+  // soundデータの読み込み
   MyAudio.loadBuffer = function loadBuffer(url){
     return new Promise(function(resolve, reject){
       var onError = function(){
@@ -166,17 +159,22 @@ var MyAudio = (function(global){
 
       loadFile(url)
         .then(function(response){
+          // デコード処理
+          // mp3はdecodeに失敗するのでwavのみ
+          // http://stackoverflow.com/questions/10365335/decodeaudiodata-returning-a-null-error
           context.decodeAudioData(response, function(buffer){ buffer ? resolve(buffer) : onError() }, onError);
         }, onError)
       ;
     });
   };
+  // この位置を中心に音を聴く
   MyAudio.setListener = function (x,y,z){
     var listener = context.listener;
     //listener.setOrientation(0,0,-1,0,1,0);
     listener.setPosition(x,y,z);
   };
 
+  // ボリューム
   MyAudio.prototype.__defineGetter__('volume', function(){
     return this.gain_node ? this.gain_node.gain.value : 0;
   });
@@ -184,17 +182,24 @@ var MyAudio = (function(global){
     this.gain_node.gain.value = val;
   });
 
+  // 音を鳴らす
   MyAudio.prototype.start = function(){
     this.source = context.createBufferSource();
     this.source.loop = true;
 
     this.source.buffer = this.buffer;
+
+    // 音
     this.source.connect(this.gain_node);
+    // ボリューム
     this.gain_node.connect(this.panner);
+    // 位置
     this.panner.connect(context.destination);
+
     this.source.start(0);
     this.is_playing = true;
   };
+  // 音を止める
   MyAudio.prototype.stop = function(){
     if(this.is_playing){
       this.source.stop(0);
@@ -202,6 +207,7 @@ var MyAudio = (function(global){
       this.is_playing = false;
     }
   };
+  // 音が鳴る位置指定
   MyAudio.prototype.setPosition = function(x,y,z){
     this.panner.setPosition(x, y, z);
   };
@@ -209,10 +215,12 @@ var MyAudio = (function(global){
   return MyAudio;
 })(window);
 
+// 動物管理
 var SoundBox = (function(global){
   function SoundBox(element){
     this.element = element;
   }
+  // soundの非同期読み込み
   SoundBox.loadAsync = function(element){
     var box = new SoundBox(element);
     return new Promise(function(resolve, reject){
@@ -236,16 +244,22 @@ var SoundBox = (function(global){
   return SoundBox;
 })(window);
 
-
+/*
+ * sound読み込み完了時の処理
+ */
 function onLoadAssets(sound_list){
+  // この位置を中心に音を聴く
   MyAudio.setListener(50, 0, 100);
-  var sound_boxe_map = {}, visible_boxes = [];
+  // 現在表示されている動物
+  var visible_boxes = [];
 
+  // 動物divの中心を取得するためにdocumentの幅取得
   var document_width = document.body.offsetWidth;
   window.addEventListener('resize', function(){
     document_width = document.body.offsetWidth;
   });
 
+  // 動物の位置が変わった時に音の位置を再計算
   var updatePosition = function(sound_box){
     var zoom = parseFloat(sound_box.element.style.zoom) || 0;
     var left = sound_box.element.offsetLeft * zoom;
@@ -256,16 +270,19 @@ function onLoadAssets(sound_list){
     };
     sound_box.audio.setPosition(position.x * 100, 0, zoom*100);
   };
+  // スクロールイベント処理
   var onScroll = function(){
     visible_boxes.forEach(function(sound_box){
       updatePosition(sound_box);
     });
   };
+  // 音を鳴らす処理
   var attachSoundEffect = function(sound_box){
     updatePosition(sound_box);
     sound_box.audio.start();
     visible_boxes.push(sound_box);
   };
+  // 音を消す処理
   var detachSoundEffect = function(sound_box){
     sound_box.audio.stop();
     visible_boxes = visible_boxes.filter(function(v){
@@ -275,27 +292,23 @@ function onLoadAssets(sound_list){
   var attachScrollEvent = function(sound_box){
     sound_box.element.addEventListener('skrollr:classChanged', function(e){
       switch(e.detail){
-      case 'skrollable-before':
-      case 'skrollable-after':
+      case 'skrollable-before':   // 動物表示前
+      case 'skrollable-after':    // 動物が通り過ぎた後
         detachSoundEffect(sound_box);
         break;
-      case 'skrollable-between':
+      case 'skrollable-between':  // 動物が前に表示されている状態
         attachSoundEffect(sound_box);
-        //sound_box.audio.volume -= 0.1;
+        //sound_box.audio.volume = 2; // ボリューム設定
         break;
       }
     });
   };
 
   sound_list.forEach(function(sound_box){
-    window.hoge = sound_box;
-
     attachScrollEvent(sound_box);
-
-    sound_boxe_map[sound_box.element.id] = sound_box;
   });
 
-
+  // skrollrでパララックス
   var s = skrollr.init({render:onScroll});
 }
 
@@ -326,6 +339,7 @@ $(document).ready(function(){
 
 <script>
 (function(){
+  // 初期化処理で.img_boxのdata-soundを事前に読み込む
   var sound_boxes = Array.apply(null, document.getElementsByClassName('img_box'));
   Promise.all(sound_boxes.map(function(sound_box){
     return SoundBox.loadAsync(sound_box);
