@@ -116,11 +116,9 @@ var MyAudio = (function(global){
   function MyAudio(buffer){
     this.is_playing = false;
     this.buffer = buffer;
-    this.source = context.createBufferSource();
     this.gain_node = context.createGain();
     this.panner = context.createPanner();
 
-    this.source.loop = true;
     this.panner.panningModel = 'HRTF';
     this.panner.distanceModel = 'exponential';
     //this.panner.coneOuterAngle = 180;
@@ -170,6 +168,9 @@ var MyAudio = (function(global){
   });
 
   MyAudio.prototype.start = function(){
+    this.source = context.createBufferSource();
+    this.source.loop = true;
+
     this.source.buffer = this.buffer;
     this.source.connect(this.gain_node);
     this.gain_node.connect(this.panner);
@@ -178,7 +179,11 @@ var MyAudio = (function(global){
     this.is_playing = true;
   };
   MyAudio.prototype.stop = function(){
-    if(this.is_playing) this.source.stop(0);
+    if(this.is_playing){
+      this.source.stop(0);
+      this.source.disconnect();
+      this.is_playing = false;
+    }
   };
   MyAudio.prototype.setPosition = function(x,y,z){
     this.panner.setPosition(x, y, z);
@@ -217,56 +222,64 @@ var SoundBox = (function(global){
 
 function onLoadAssets(sound_list){
   MyAudio.setListener(50, 0, 100);
+  var sound_boxe_map = {}, visible_boxes = [];
 
+  var document_width = document.body.offsetWidth;
+  window.addEventListener('resize', function(){
+    document_width = document.body.offsetWidth;
+  });
+
+  var updatePosition = function(sound_box){
+    var zoom = parseFloat(sound_box.element.style.zoom);
+    var left = sound_box.element.offsetLeft * zoom;
+    var center = left + sound_box.element.offsetWidth * zoom / 2;
+
+    var position = {
+      x: center / document_width
+    };
+    sound_box.audio.setPosition(position.x * 100, 0, zoom*100);
+  };
+  var onScroll = function(){
+    visible_boxes.forEach(function(sound_box){
+      updatePosition(sound_box);
+    });
+  };
   var attachSoundEffect = function(sound_box){
-    /*
-    var document_width = document.body.offsetWidth;
-    setInterval(function(){
-      var left = sound_box.element.offsetLeft;
-
-      if(document_width < left) delta = -1;
-      else if(0 > left) delta = 1;
-
-      left += 10 * delta;
-      sound_box.element.style.left = left;
-      var center = left + sound_box.element.offsetWidth / 2;
-      var position = {
-        x: center / document_width
-      };
-      sound_box.audio.setPosition(position.x * 100, 0, window.aa);
-    }, 200);
-    */
+    updatePosition(sound_box);
+    sound_box.audio.start();
+    visible_boxes.push(sound_box);
+  };
+  var detachSoundEffect = function(sound_box){
+    sound_box.audio.stop();
+    visible_boxes = visible_boxes.filter(function(v){
+      return sound_box.element.id !== v.element.id;
+    });
   };
   var attachScrollEvent = function(sound_box){
     sound_box.element.addEventListener('skrollr:classChanged', function(e){
-      var box = sound_boxes[this.id];
-      if(!box) return;
       switch(e.detail){
       case 'skrollable-before':
       case 'skrollable-after':
-        box.audio.stop();
+        detachSoundEffect(sound_box);
         break;
       case 'skrollable-between':
-        //box.audio.start();
+        attachSoundEffect(sound_box);
         //sound_box.audio.volume -= 0.1;
         break;
       }
     });
   };
 
-
-  var sound_boxes = {};
   sound_list.forEach(function(sound_box){
     window.hoge = sound_box;
 
-    attachSoundEffect(sound_box);
     attachScrollEvent(sound_box);
 
-    sound_boxes[sound_box.element.id] = sound_box;
+    sound_boxe_map[sound_box.element.id] = sound_box;
   });
 
 
-  var s = skrollr.init();
+  var s = skrollr.init({render:onScroll});
 }
 
 </script>
