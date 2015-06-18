@@ -86,6 +86,8 @@ data-18000="opacity: 0; zoom: 5; top:0%; right: 0%;"
 ></div>
 
 <div id="animal_6" class="img_box img_6"
+data-emit-events
+data-sound="se/blueyellow.wav"
 data-18000= "opacity: 0; zoom: 0;  top:40%; left: 60%"
 data=19000="opacity: 0.99; zoom: 0.6;  top:15%; left: 10%;"
 data-20000="opacity: 1; zoom: 1;  top:6%; left: 0%;"
@@ -245,7 +247,7 @@ function onLoadAssets(sound_list){
   });
 
   var updatePosition = function(sound_box){
-    var zoom = parseFloat(sound_box.element.style.zoom);
+    var zoom = parseFloat(sound_box.element.style.zoom) || 0;
     var left = sound_box.element.offsetLeft * zoom;
     var center = left + sound_box.element.offsetWidth * zoom / 2;
 
