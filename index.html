@@ -249,6 +249,7 @@ var SoundBox = (function(global){
  */
 function onLoadAssets(sound_list){
   // この位置を中心に音を聴く
+  // x:100 y:100 z:100をとりあえず中心にする
   MyAudio.setListener(50, 0, 100);
   // 現在表示されている動物
   var visible_boxes = [];
@@ -268,7 +269,7 @@ function onLoadAssets(sound_list){
     var position = {
       x: center / document_width
     };
-    sound_box.audio.setPosition(position.x * 100, 0, zoom*100);
+    sound_box.audio.setPosition(position.x * 100, 100, zoom*100);
   };
   // スクロールイベント処理
   var onScroll = function(){
@@ -298,7 +299,7 @@ function onLoadAssets(sound_list){
         break;
       case 'skrollable-between':  // 動物が前に表示されている状態
         attachSoundEffect(sound_box);
-        //sound_box.audio.volume = 2; // ボリューム設定
+        sound_box.audio.volume = 10; // ボリューム設定
         break;
       }
     });
