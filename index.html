@@ -7,18 +7,43 @@
 </head>
 
 <body data-vide-bg="">
+<audio id="sound" src="se/sizen.mp3" type="audio/mp3" loop autoplay></audio><script>
+var TARGET = document.getElementById('sound');
+function play(){
+    TARGET.play();
+}
+function pause(){
+    TARGET.pause();
+}
+</script>
 
 <div class="bg_fixed"
 data-0="zoom: 10;"
 data-10000="zoom: 1;"
 ></div>
-<p class="num">スクロールの値 | <span id="scrollValue">0</span></p>
+<div class="num"><span id="scrollValue">0</span><br>
+<a onclick="pause();">PAUSE</a>
+</div>
+
+<div class="img_7"
+data-0= "opacity: 1; zoom: 1;  top:0%; right: 0%"
+data-2400= "opacity: 0; zoom: 1; top:0%; right: 0%;"
+>
+<div class="headphone"><a onclick="play();" class="play">PLAY</a></div>
+</div>
+
+<div class="img_8"
+data-1000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
+data-2000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
+data-4000= "opacity: 0.7; zoom: 1;  top:0%; right: 0%"
+data-5000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
+></div>
 
 
 <div class="img_box img_1"
-data-1000="opacity: 0; zoom: 0;  top:8%;"
-data-2000="opacity: 0.99; zoom: 0.6;  top: 20%;"
-data-4000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
+data-3000="opacity: 0; zoom: 0;  top:8%;"
+data-4000="opacity: 0.99; zoom: 0.6;  top: 20%;"
+data-5000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
 data-6000="opacity: 0; zoom: 5; top:20%; left: 100%;"
 ></div>
 
@@ -45,31 +70,37 @@ data-15000="opacity: 0; zoom: 5; top:0%; left: 100%;"
 
 <div class="img_box img_5"
 data-14000= "opacity: 0; zoom: 0;  top:40%; right: 50%"
-data-15000="opacity: 0.99; zoom: 0.6;  top:15%; right: 50%;"
-data-16000="opacity: 1; zoom: 1;  top:0%; right: 20%;"
-data-18000="opacity: 0; zoom: 5; top:0%; right: 50%;"
+data-16000="opacity: 0.99; zoom: 0.6;  top:15%; right: 50%;"
+data-17000="opacity: 1; zoom: 1;  top:0%; right: 0%;"
+data-18000="opacity: 0; zoom: 5; top:0%; right: 0%;"
 ></div>
 
 <div class="img_box img_6"
-data-16000= "opacity: 0; zoom: 0;  top:40%; right: 60%"
-data-17000="opacity: 0.99; zoom: 0.6;  top:15%; right: 60%;"
-data-17500="opacity: 1; zoom: 1;  top:6%; right: 40%;"
-data-18000="opacity: 0; zoom: 5; top:20%; right: 10%;"
+data-18000= "opacity: 0; zoom: 0;  top:40%; left: 60%"
+data=19000="opacity: 0.99; zoom: 0.6;  top:15%; left: 10%;"
+data-20000="opacity: 1; zoom: 1;  top:6%; left: 0%;"
+data-21000="opacity: 0; zoom: 5; top:20%; left: 0%;"
 ></div>
 
 <div class="img_7"
-data-18000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
-data-18500= "opacity: 1; zoom: 1;  top:0%; right: 0%"
-data-40000= "opacity: 0; zoom: 1; top:0%; right: 0%;"
+data-20000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
+data-21000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
+data-22000= "opacity: 0; zoom: 1; top:0%; right: 0%;"
 ></div>
 
-<div class="img_box img_6"
+<div class="img_8"
+data-21000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
+data-22000= "opacity: 0.99; zoom: 1;  top:0%; right: 0%"
+data-23000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
+></div>
+
+<!-- <div class="img_box img_6"
 data-26000= "opacity: 0; zoom: 0; top:30%; right: 10%"
 data-32000= "opacity: 0.99; zoom: 1;  top:30%; right: 80%"
-data-38000="opacity: 1; zoom: 1; top:30%; right: 10%"
+data-38000="opacity: 1; zoom: 1; top:30%; right: 0%"
 data-42000="opacity: 1; zoom: 1; top:30%; right: 80%"
 data-48000="opacity: 0; zoom: 5; top:0%; right: 10%"
-></div>
+></div> -->
 
 <div class="cloud_btm_1"></div>
 <div class="cloud_btm_2"></div>
@@ -77,8 +108,6 @@ data-48000="opacity: 0; zoom: 5; top:0%; right: 10%"
 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!--<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
- <script type="text/javascript" src="js/jquery.vide.js"></script> -->
 <script type="text/javascript" src="js/skrollr.js"></script>
 <script>
 $(function() {
@@ -102,6 +131,7 @@ $(document).ready(function(){
     }
 });
 </script>
+
 <script>
     var s = skrollr.init();
 </script>
