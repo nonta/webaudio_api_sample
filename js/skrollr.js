@@ -951,6 +951,8 @@
 				//Add the skrollr-before or -after class.
 				if(beforeFirst) {
 					_updateClass(element, [SKROLLABLE_BEFORE_CLASS], [SKROLLABLE_AFTER_CLASS, SKROLLABLE_BETWEEN_CLASS]);
+					var ev = new CustomEvent('skrollr:classChanged', {detail: SKROLLABLE_BEFORE_CLASS});
+					element.dispatchEvent(ev);;
 
 					//This handles the special case where we exit the first keyframe.
 					if(emitEvents && lastFrameIndex > -1) {
@@ -959,6 +961,8 @@
 					}
 				} else {
 					_updateClass(element, [SKROLLABLE_AFTER_CLASS], [SKROLLABLE_BEFORE_CLASS, SKROLLABLE_BETWEEN_CLASS]);
+					var ev = new CustomEvent('skrollr:classChanged', {detail: SKROLLABLE_AFTER_CLASS});
+					element.dispatchEvent(ev);;
 
 					//This handles the special case where we exit the last keyframe.
 					if(emitEvents && lastFrameIndex < framesLength) {
@@ -1001,6 +1005,8 @@
 				//Did we handle an edge last time?
 				if(skrollable.edge !== 0) {
 					_updateClass(element, [SKROLLABLE_CLASS, SKROLLABLE_BETWEEN_CLASS], [SKROLLABLE_BEFORE_CLASS, SKROLLABLE_AFTER_CLASS]);
+					var ev = new CustomEvent('skrollr:classChanged', {detail: SKROLLABLE_BETWEEN_CLASS});
+					element.dispatchEvent(ev);;
 					skrollable.edge = 0;
 				}
 			}

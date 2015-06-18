@@ -15,55 +15,71 @@ data-10000="zoom: 1;"
 <p class="num">スクロールの値 | <span id="scrollValue">0</span></p>
 
 
-<div class="img_box img_1"
+<div id="animal_1" class="img_box img_1"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-1000="opacity: 0; zoom: 0;  top:8%;"
 data-2000="opacity: 0.99; zoom: 0.6;  top: 20%;"
 data-4000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
 data-6000="opacity: 0; zoom: 5; top:20%; left: 100%;"
 ></div>
 
-<div class="img_box img_2"
+<div id="animal_2" class="img_box img_2"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-5800="opacity: 0; zoom: 0;  top:8%; right: 20%"
 data-7000="opacity: 0.99; zoom: 0.6;  top:15%;"
 data-8000="opacity: 1; zoom: 1;  top:0%; right: 10%;"
 data-10000="opacity: 0; zoom: 5; top:8%; right: 100%;"
 ></div>
 
-<div class="img_box img_3"
+<div id="animal_3" class="img_box img_3"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-9000= "opacity: 0; zoom: 0;  top:0%; left: 50%"
 data-10000="opacity: 0.99; zoom: 0.6;  top:15%; left: 50%;"
 data-11000="opacity: 1; zoom: 1;  top:0%; left: 20%;"
 data-13000="opacity: 0; zoom: 5; top:0%; left: 10%;"
 ></div>
 
-<div class="img_box img_4"
+<div id="animal_4" class="img_box img_4"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-12000="opacity: 0; zoom: 0;  top:30%;"
 data-13000="opacity: 0.99; zoom: 0.6;  top: 20%;"
 data-14000="opacity: 1; zoom: 1;  top:0%; left: 10%;"
 data-15000="opacity: 0; zoom: 5; top:0%; left: 100%;"
 ></div>
 
-<div class="img_box img_5"
+<div id="animal_5" class="img_box img_5"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-14000= "opacity: 0; zoom: 0;  top:40%; right: 50%"
 data-15000="opacity: 0.99; zoom: 0.6;  top:15%; right: 50%;"
 data-16000="opacity: 1; zoom: 1;  top:0%; right: 20%;"
 data-18000="opacity: 0; zoom: 5; top:0%; right: 50%;"
 ></div>
 
-<div class="img_box img_6"
+<div id="animal_6" class="img_box img_6"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-16000= "opacity: 0; zoom: 0;  top:40%; right: 60%"
 data-17000="opacity: 0.99; zoom: 0.6;  top:15%; right: 60%;"
 data-17500="opacity: 1; zoom: 1;  top:6%; right: 40%;"
 data-18000="opacity: 0; zoom: 5; top:20%; right: 10%;"
 ></div>
 
-<div class="img_7"
+<div id="animal_7" class="img_7"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-18000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
 data-18500= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 data-40000= "opacity: 0; zoom: 1; top:0%; right: 0%;"
 ></div>
 
-<div class="img_box img_6"
+<div id="animal_6" class="img_box img_6"
+data-emit-events
+data-sound="/se/blueyellow.wav"
 data-26000= "opacity: 0; zoom: 0; top:30%; right: 10%"
 data-32000= "opacity: 0.99; zoom: 1;  top:30%; right: 80%"
 data-38000="opacity: 1; zoom: 1; top:30%; right: 10%"
@@ -80,6 +96,181 @@ data-48000="opacity: 0; zoom: 5; top:0%; right: 10%"
 <!--<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
  <script type="text/javascript" src="js/jquery.vide.js"></script> -->
 <script type="text/javascript" src="js/skrollr.js"></script>
+
+
+
+<style>
+/*
+.sound-box{
+  width: 70px;
+  position: fixed;
+  left: 0;
+}
+*/
+</style>
+<script>
+// http://stackoverflow.com/questions/10365335/decodeaudiodata-returning-a-null-error
+var MyAudio = (function(global){
+  var AudioContext = webkitAudioContext || AudioContext;
+
+  function MyAudio(buffer){
+    this.is_playing = false;
+    this.buffer = buffer;
+    this.source = context.createBufferSource();
+    this.gain_node = context.createGain();
+    this.panner = context.createPanner();
+
+    this.source.loop = true;
+    this.panner.panningModel = 'HRTF';
+    this.panner.distanceModel = 'exponential';
+    //this.panner.coneOuterAngle = 180;
+    //this.panner.coneInnerAngle = 0;
+  }
+  var context = MyAudio.context = new AudioContext();
+
+  function loadFile(url){
+    return new Promise(function(resolve, reject){
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function(){
+        xhr.status == 200 ? resolve(xhr.response) : reject(Error(xhr.statusText));
+      };
+      xhr.onerror = function(){
+        reject(Error('http request error ' + url));
+      };
+      xhr.send();
+    });
+  }
+  MyAudio.loadBuffer = function loadBuffer(url){
+    return new Promise(function(resolve, reject){
+      var onError = function(){
+        console.error(arguments);
+        reject(Error('decode error ' + url))
+      };
+
+      loadFile(url)
+        .then(function(response){
+          context.decodeAudioData(response, function(buffer){ buffer ? resolve(buffer) : onError() }, onError);
+        }, onError)
+      ;
+    });
+  };
+  MyAudio.setListener = function (x,y,z){
+    var listener = context.listener;
+    //listener.setOrientation(0,0,-1,0,1,0);
+    listener.setPosition(x,y,z);
+  };
+
+  MyAudio.prototype.__defineGetter__('volume', function(){
+    return this.gain_node ? this.gain_node.gain.value : 0;
+  });
+  MyAudio.prototype.__defineSetter__('volume', function(val){
+    this.gain_node.gain.value = val;
+  });
+
+  MyAudio.prototype.start = function(){
+    this.source.buffer = this.buffer;
+    this.source.connect(this.gain_node);
+    this.gain_node.connect(this.panner);
+    this.panner.connect(context.destination);
+    this.source.start(0);
+    this.is_playing = true;
+  };
+  MyAudio.prototype.stop = function(){
+    if(this.is_playing) this.source.stop(0);
+  };
+  MyAudio.prototype.setPosition = function(x,y,z){
+    this.panner.setPosition(x, y, z);
+  };
+
+  return MyAudio;
+})(window);
+
+var SoundBox = (function(global){
+  function SoundBox(element){
+    this.element = element;
+  }
+  SoundBox.loadAsync = function(element){
+    var box = new SoundBox(element);
+    return new Promise(function(resolve, reject){
+      var url = box.sound_url;
+      if(url){
+        MyAudio.loadBuffer(box.sound_url)
+          .then(function(buffer){
+            box.audio = new MyAudio(buffer);
+            resolve(box);
+          })
+        ;
+      }else{
+        reject(Error('not define sound url'));
+      }
+    });
+  };
+  SoundBox.prototype.__defineGetter__('sound_url', function(){
+    return this.element.getAttribute('data-sound');
+  });
+
+  return SoundBox;
+})(window);
+
+
+function onLoadAssets(sound_list){
+  MyAudio.setListener(50, 0, 100);
+
+  var attachSoundEffect = function(sound_box){
+    /*
+    var document_width = document.body.offsetWidth;
+    setInterval(function(){
+      var left = sound_box.element.offsetLeft;
+
+      if(document_width < left) delta = -1;
+      else if(0 > left) delta = 1;
+
+      left += 10 * delta;
+      sound_box.element.style.left = left;
+      var center = left + sound_box.element.offsetWidth / 2;
+      var position = {
+        x: center / document_width
+      };
+      sound_box.audio.setPosition(position.x * 100, 0, window.aa);
+    }, 200);
+    */
+  };
+  var attachScrollEvent = function(sound_box){
+    sound_box.element.addEventListener('skrollr:classChanged', function(e){
+      var box = sound_boxes[this.id];
+      if(!box) return;
+      switch(e.detail){
+      case 'skrollable-before':
+      case 'skrollable-after':
+        box.audio.stop();
+        break;
+      case 'skrollable-between':
+        //box.audio.start();
+        //sound_box.audio.volume -= 0.1;
+        break;
+      }
+    });
+  };
+
+
+  var sound_boxes = {};
+  sound_list.forEach(function(sound_box){
+    window.hoge = sound_box;
+
+    attachSoundEffect(sound_box);
+    attachScrollEvent(sound_box);
+
+    sound_boxes[sound_box.element.id] = sound_box;
+  });
+
+
+  var s = skrollr.init();
+}
+
+</script>
+
 <script>
 $(function() {
     $(window).scroll(function() {
@@ -103,6 +294,11 @@ $(document).ready(function(){
 });
 </script>
 <script>
-    var s = skrollr.init();
+(function(){
+  var sound_boxes = Array.apply(null, document.getElementsByClassName('img_box'));
+  Promise.all(sound_boxes.map(function(sound_box){
+    return SoundBox.loadAsync(sound_box);
+  })).then(onLoadAssets);
+})();
 </script>
 </html>
