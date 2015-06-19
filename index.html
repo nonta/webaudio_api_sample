@@ -238,16 +238,14 @@ var SoundBox = (function(global){
     var box = new SoundBox(element);
     return new Promise(function(resolve, reject){
       var url = box.sound_url;
-      if(url){
-        MyAudio.loadBuffer(box.sound_url)
-          .then(function(buffer){
-            box.audio = new MyAudio(buffer);
-            resolve(box);
-          })
-        ;
-      }else{
-        reject(Error('not define sound url'));
-      }
+      if(!url) return reject(Error('not define sound url'));
+
+      MyAudio.loadBuffer(box.sound_url)
+        .then(function(buffer){
+          box.audio = new MyAudio(buffer);
+          resolve(box);
+        })
+      ;
     });
   };
   SoundBox.prototype.__defineGetter__('sound_url', function(){
