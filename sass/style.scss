@@ -15,6 +15,7 @@ ul {
   background: url(../images/img_#{$animal}.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 /******************************************************************************************************************************
    
@@ -71,6 +72,7 @@ html, body {
   background: url(../images/text.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 .headphone {
   width: 14%;

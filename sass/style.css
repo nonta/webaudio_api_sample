@@ -1,0 +1,264 @@
+/* line 3, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+ul {
+  display: block;
+  list-style-type: disc;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 0;
+  list-style: none; }
+
+/******************************************************************************************************************************
+   
+******************************************************************************************************************************/
+/* line 23, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%; }
+  /* line 27, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  html + div, body + div {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    filter: grayscale(100%); }
+
+/* line 35, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.bg_fixed {
+  background: url(../video/background.jpg) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  width: 100%;
+  height: 100%; }
+
+/* line 42, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.num {
+  margin: 0;
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.41);
+  padding: 4px;
+  width: 70px;
+  border-radius: 1em;
+  text-align: center;
+  font-size: 12px; }
+
+/* line 56, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_1 {
+  background: url(../images/img_lion.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 57, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_2 {
+  background: url(../images/img_pig.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 58, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_3 {
+  background: url(../images/img_kapibara.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 59, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_4 {
+  background: url(../images/img_gorilla.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 60, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_5 {
+  background: url(../images/img_cat.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 61, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_6 {
+  background: url(../images/img_bird.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 62, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_7 {
+  width: 100%;
+  height: 100%;
+  background: url(../images/cloud_up.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed; }
+
+/* line 69, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.img_8 {
+  width: 100%;
+  height: 100%;
+  background: url(../images/text.png) no-repeat;
+  background-size: 100% auto;
+  position: fixed;
+  opacity: 0; }
+
+/* line 77, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.headphone {
+  width: 14%;
+  height: 100%;
+  background: url(../images/headphone.png) no-repeat;
+  background-size: 100% auto;
+  margin: 30% auto 0;
+  animation-name: pulse;
+  -webkit-animation-name: pulse;
+  animation-duration: 1.5s;
+  -webkit-animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite; }
+  /* line 89, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  .headphone .play {
+    position: relative;
+    z-index: 3; }
+
+/* line 97, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.cloud_btm_1, .cloud_btm_2 {
+  width: 100%;
+  height: 50%;
+  position: fixed;
+  bottom: 0;
+  background: url(../images/cloud_near.png) repeat-x;
+  background-size: 100% auto;
+  animation: cloudmove 100s linear infinite;
+  -webkit-animation: cloudmove 100s linear infinite; }
+
+/* line 108, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.cloud_btm_1 {
+  width: 110%;
+  animation: cloudmove 100s linear infinite;
+  -webkit-animation: cloudmove 100s linear infinite; }
+
+/* line 114, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.cloud_btm_2 {
+  animation: cloudmove2 100s linear infinite;
+  -webkit-animation: cloudmove2 100s linear infinite; }
+
+@keyframes cloudmove {
+  /* line 120, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  0% {
+    background-position: 0 0; }
+
+  /* line 121, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  25% {
+    background-position: 200px 5px; }
+
+  /* line 122, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  50% {
+    background-position: 400px 0; }
+
+  /* line 123, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  75% {
+    background-position: 600px 5px; }
+
+  /* line 124, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  100% {
+    background-position: 800px 0; } }
+
+@-webkit-keyframes cloudmove {
+  /* line 127, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  0% {
+    background-position: 0 0; }
+
+  /* line 128, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  25% {
+    background-position: 200px 5px; }
+
+  /* line 129, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  50% {
+    background-position: 400px 0; }
+
+  /* line 130, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  75% {
+    background-position: 600px 5px; }
+
+  /* line 131, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  100% {
+    background-position: 800px 0; } }
+
+@keyframes cloudmove2 {
+  /* line 134, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  0% {
+    background-position: 0 0; }
+
+  /* line 135, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  25% {
+    background-position: -800px 5px; }
+
+  /* line 136, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  50% {
+    background-position: -600px 0; }
+
+  /* line 137, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  75% {
+    background-position: -400px 5px; }
+
+  /* line 138, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  100% {
+    background-position: -200px 0; } }
+
+@-webkit-keyframes cloudmove2 {
+  /* line 141, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  0% {
+    background-position: 0 0; }
+
+  /* line 142, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  25% {
+    background-position: -800px 5px; }
+
+  /* line 143, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  50% {
+    background-position: -600px 0; }
+
+  /* line 144, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  75% {
+    background-position: -400px 5px; }
+
+  /* line 145, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  100% {
+    background-position: -200px 0; } }
+
+@keyframes pulse {
+  /* line 155, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  0% {
+    opacity: 0.3; }
+
+  /* line 156, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  50% {
+    opacity: 1; }
+
+  /* line 157, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  100% {
+    opacity: 0.3; } }
+
+@-webkit-keyframes pulse {
+  /* line 161, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  0% {
+    -webkit-opacity: 0.3; }
+
+  /* line 162, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  50% {
+    -webkit-opacity: 1; }
+
+  /* line 163, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+  100% {
+    -webkit-opacity: 0.3; } }
+
+/* line 166, /Users/sasaki_nozomi/sample/webaudio_api_sample/sass/style.scss */
+.memo {
+  opacity: 0;
+  zoom: 0; }
+
+/*# sourceMappingURL=style.css.map */

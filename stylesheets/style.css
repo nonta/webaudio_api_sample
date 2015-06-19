@@ -51,36 +51,42 @@ html + div, body + div {
   background: url(../images/img_lion.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .img_2 {
   background: url(../images/img_pig.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .img_3 {
   background: url(../images/img_kapibara.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .img_4 {
   background: url(../images/img_gorilla.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .img_5 {
   background: url(../images/img_cat.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .img_6 {
   background: url(../images/img_bird.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .img_7 {
@@ -97,6 +103,7 @@ html + div, body + div {
   background: url(../images/text.png) no-repeat;
   background-size: 100% auto;
   position: fixed;
+  opacity: 0;
 }
 
 .headphone {

@@ -22,17 +22,18 @@ data-0="zoom: 10;"
 data-10000="zoom: 1;"
 ></div>
 <div class="num"><span id="scrollValue">0</span><br>
-<a onclick="pause();">PAUSE</a>
 </div>
 
 <div class="img_7"
-data-0= "opacity: 1; zoom: 1;  top:0%; right: 0%"
+data-10= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 data-2400= "opacity: 0; zoom: 1; top:0%; right: 0%;"
 >
-<div class="headphone"><a onclick="play();" class="play">PLAY</a></div>
+<div class="headphone"></div>
 </div>
 
-<div class="img_8"
+<div class="img_box img_8"
+data-emit-events
+data-sound="se/blueyellow.wav"
 data-1000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
 data-2000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 data-4000= "opacity: 0.7; zoom: 1;  top:0%; right: 0%"
@@ -41,12 +42,10 @@ data-5000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
 
 
 <div id="animal_1" class="img_box img_1"
-data-emit-events
-data-sound="se/blueyellow.wav"
 data-3000="opacity: 0; zoom: 0;  top:8%;"
 data-4000="opacity: 0.99; zoom: 0.6;  top: 20%;"
 data-5000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
-data-6000="opacity: 0; zoom: 5; top:20%; left: 100%;"
+data-6000="opacity: 0; zoom: 1.5; top:20%; left: 100%;"
 ></div>
 
 <div id="animal_2" class="img_box img_2"
@@ -55,7 +54,7 @@ data-sound="se/blueyellow.wav"
 data-5800="opacity: 0; zoom: 0;  top:8%; right: 20%"
 data-7000="opacity: 0.99; zoom: 0.6;  top:15%;"
 data-8000="opacity: 1; zoom: 1;  top:0%; right: 10%;"
-data-10000="opacity: 0; zoom: 5; top:8%; right: 100%;"
+data-10000="opacity: 0; zoom: 1.5; top:8%; right: 100%;"
 ></div>
 
 <div id="animal_3" class="img_box img_3"
@@ -64,7 +63,7 @@ data-sound="se/blueyellow.wav"
 data-9000= "opacity: 0; zoom: 0;  top:0%; left: 50%"
 data-10000="opacity: 0.99; zoom: 0.6;  top:15%; left: 50%;"
 data-11000="opacity: 1; zoom: 1;  top:0%; left: 20%;"
-data-13000="opacity: 0; zoom: 5; top:0%; left: 10%;"
+data-13000="opacity: 0; zoom: 1.5; top:0%; left: 10%;"
 ></div>
 
 <div id="animal_4" class="img_box img_4"
@@ -73,16 +72,16 @@ data-sound="se/blueyellow.wav"
 data-12000="opacity: 0; zoom: 0;  top:30%;"
 data-13000="opacity: 0.99; zoom: 0.6;  top: 20%;"
 data-14000="opacity: 1; zoom: 1;  top:0%; left: 10%;"
-data-15000="opacity: 0; zoom: 5; top:0%; left: 100%;"
+data-15000="opacity: 0; zoom: 1.5; top:0%; left: 100%;"
 ></div>
 
 <div id="animal_5" class="img_box img_5"
 data-emit-events
 data-sound="se/blueyellow.wav"
-data-14000="opacity: 0; zoom: 0;  top:40%; right: 50%"
-data-16000="opacity: 0.99; zoom: 0.6;  top:15%; right: 50%;"
+data-14000="opacity: 0; zoom: 0;  top:10%; right: 50%"
+data-16000="opacity: 0.99; zoom: 0.6;  top:0%; right: 50%;"
 data-17000="opacity: 1; zoom: 1;  top:0%; right: 0%;"
-data-18000="opacity: 0; zoom: 5; top:0%; right: 0%;"
+data-18000="opacity: 0; zoom: 1.5; top:0%; right: 0%;"
 ></div>
 
 <div id="animal_6" class="img_box img_6"
@@ -91,7 +90,7 @@ data-sound="se/blueyellow.wav"
 data-18000="opacity: 0; zoom: 0;  top:40%; left: 60%"
 data-19000="opacity: 0.99; zoom: 0.6;  top:15%; left: 10%;"
 data-20000="opacity: 1; zoom: 1;  top:6%; left: 0%;"
-data-21000="opacity: 0; zoom: 5; top:20%; left: 0%;"
+data-21000="opacity: 0; zoom: 1.5; top:20%; left: 0%;"
 ></div>
 
 <div class="img_7"
@@ -249,8 +248,8 @@ var SoundBox = (function(global){
  */
 function onLoadAssets(sound_list){
   // この位置を中心に音を聴く
-  // x:100 y:100 z:100をとりあえず中心にする
-  MyAudio.setListener(50, 0, 100);
+  // x:50 y:50 z:100をとりあえず中心にする
+  MyAudio.setListener(50, 50, 100);
   // 現在表示されている動物
   var visible_boxes = [];
 
@@ -269,7 +268,7 @@ function onLoadAssets(sound_list){
     var position = {
       x: center / document_width
     };
-    sound_box.audio.setPosition(position.x * 100, 100, zoom*100);
+    sound_box.audio.setPosition(position.x * 100, 50, zoom*80);
   };
   // スクロールイベント処理
   var onScroll = function(){
@@ -330,10 +329,10 @@ $(document).ready(function(){
     var divW = $('.img_box').innerWidth();
     var divH = $('.img_box').innerHeight();
     if(wW > divW){
-      $('.img_box').css('width',wW*0.8+'px'); 
+      $('.img_box').css('width',wW*1.0+'px'); 
     }
     if(wH > divH){
-      $('.img_box').css('height',wH*0.8+'px'); 
+      $('.img_box').css('height',wH*1.0+'px'); 
     }
 });
 </script>
