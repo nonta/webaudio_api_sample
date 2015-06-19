@@ -126,6 +126,7 @@ data-23000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 var MyAudio = (function(global){
   // web audio api
   var AudioContext = webkitAudioContext || AudioContext;
+  var context = new AudioContext();
   // webaudio apiのパラメータ一覧
   // http://www.g200kg.com/jp/docs/webaudio/paramlist.html
 
@@ -143,7 +144,7 @@ var MyAudio = (function(global){
     //this.panner.coneOuterAngle = 180;
     //this.panner.coneInnerAngle = 0;
   }
-  var context = MyAudio.context = new AudioContext();
+  MyAudio.context = context;
 
   // soundファイル取得
   function loadFile(url){
