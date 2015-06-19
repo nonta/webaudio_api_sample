@@ -31,7 +31,8 @@ data-2400= "opacity: 0; zoom: 1; top:0%; right: 0%;"
 <div class="headphone"></div>
 </div>
 
-<div class="img_box img_8"
+<div id="main_title" class="img_8"
+data-sound="se/blueyellow.wav"
 data-1000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
 data-2000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 data-4000= "opacity: 0.7; zoom: 1;  top:0%; right: 0%"
@@ -40,6 +41,9 @@ data-5000= "opacity: 0; zoom: 1;  top:0%; right: 0%"
 
 
 <div id="animal_1" class="img_box img_1"
+data-emit-events
+data-sound="se/blueyellow.wav"
+data-sound_loop
 data-3000="opacity: 0; zoom: 0;  top:8%;"
 data-4000="opacity: 0.99; zoom: 0.6;  top: 20%;"
 data-5000="opacity: 1; zoom: 1;  top:10%; left: 10%;"
@@ -49,6 +53,7 @@ data-6000="opacity: 0; zoom: 1.5; top:20%; left: 100%;"
 <div id="animal_2" class="img_box img_2"
 data-emit-events
 data-sound="se/blueyellow.wav"
+data-sound_loop
 data-5800="opacity: 0; zoom: 0;  top:8%; right: 20%"
 data-7000="opacity: 0.99; zoom: 0.6;  top:15%;"
 data-8000="opacity: 1; zoom: 1;  top:0%; right: 10%;"
@@ -58,6 +63,7 @@ data-10000="opacity: 0; zoom: 1.5; top:8%; right: 100%;"
 <div id="animal_3" class="img_box img_3"
 data-emit-events
 data-sound="se/blueyellow.wav"
+data-sound_loop
 data-9000= "opacity: 0; zoom: 0;  top:0%; left: 50%"
 data-10000="opacity: 0.99; zoom: 0.6;  top:15%; left: 50%;"
 data-11000="opacity: 1; zoom: 1;  top:0%; left: 20%;"
@@ -67,6 +73,7 @@ data-13000="opacity: 0; zoom: 1.5; top:0%; left: 10%;"
 <div id="animal_4" class="img_box img_4"
 data-emit-events
 data-sound="se/blueyellow.wav"
+data-sound_loop
 data-12000="opacity: 0; zoom: 0;  top:30%;"
 data-13000="opacity: 0.99; zoom: 0.6;  top: 20%;"
 data-14000="opacity: 1; zoom: 1;  top:0%; left: 10%;"
@@ -76,6 +83,7 @@ data-15000="opacity: 0; zoom: 1.5; top:0%; left: 100%;"
 <div id="animal_5" class="img_box img_5"
 data-emit-events
 data-sound="se/blueyellow.wav"
+data-sound_loop
 data-14000="opacity: 0; zoom: 0;  top:10%; right: 50%"
 data-16000="opacity: 0.99; zoom: 0.6;  top:0%; right: 50%;"
 data-17000="opacity: 1; zoom: 1;  top:0%; right: 0%;"
@@ -85,6 +93,7 @@ data-18000="opacity: 0; zoom: 1.5; top:0%; right: 0%;"
 <div id="animal_6" class="img_box img_6"
 data-emit-events
 data-sound="se/blueyellow.wav"
+data-sound_loop
 data-18000="opacity: 0; zoom: 0;  top:40%; left: 60%"
 data-19000="opacity: 0.99; zoom: 0.6;  top:15%; left: 10%;"
 data-20000="opacity: 1; zoom: 1;  top:6%; left: 0%;"
@@ -117,11 +126,16 @@ data-23000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 var MyAudio = (function(global){
   // web audio api
   var AudioContext = webkitAudioContext || AudioContext;
+  // webaudio apiのパラメータ一覧
+  // http://www.g200kg.com/jp/docs/webaudio/paramlist.html
 
   function MyAudio(buffer){
     this.is_playing = false;
     this.buffer = buffer;
+
+    // ボリューム
     this.gain_node = context.createGain();
+    // 位置
     this.panner = context.createPanner();
 
     this.panner.panningModel = 'HRTF';
@@ -180,9 +194,10 @@ var MyAudio = (function(global){
   });
 
   // 音を鳴らす
-  MyAudio.prototype.start = function(){
+  MyAudio.prototype.start = function(params){
+    if(!params) params = {};
     this.source = context.createBufferSource();
-    this.source.loop = true;
+    this.source.loop = params.loop ? true : false;
 
     this.source.buffer = this.buffer;
 
@@ -276,8 +291,13 @@ function onLoadAssets(sound_list){
   };
   // 音を鳴らす処理
   var attachSoundEffect = function(sound_box){
+    var element = sound_box.element;
+    var audio_option = {
+      loop: element.getAttribute('data-sound_loop') !== null
+    };
+
     updatePosition(sound_box);
-    sound_box.audio.start();
+    sound_box.audio.start(audio_option);
     visible_boxes.push(sound_box);
   };
   // 音を消す処理
@@ -338,7 +358,7 @@ $(document).ready(function(){
 <script>
 (function(){
   // 初期化処理で.img_boxのdata-soundを事前に読み込む
-  var sound_boxes = Array.apply(null, document.getElementsByClassName('img_box'));
+  var sound_boxes = Array.apply(null, document.querySelectorAll('*[data-sound]'));
   Promise.all(sound_boxes.map(function(sound_box){
     return SoundBox.loadAsync(sound_box);
   })).then(onLoadAssets);
