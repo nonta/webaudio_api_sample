@@ -128,6 +128,7 @@ data-23000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 var MyAudio = (function(global){
   // web audio api
   var AudioContext = webkitAudioContext || AudioContext;
+  var context = new AudioContext();
   // webaudio apiのパラメータ一覧
   // http://www.g200kg.com/jp/docs/webaudio/paramlist.html
 
@@ -145,7 +146,7 @@ var MyAudio = (function(global){
     //this.panner.coneOuterAngle = 180;
     //this.panner.coneInnerAngle = 0;
   }
-  var context = MyAudio.context = new AudioContext();
+  MyAudio.context = context;
 
   // soundファイル取得
   function loadFile(url){
@@ -184,7 +185,7 @@ var MyAudio = (function(global){
   MyAudio.setListener = function (x,y,z){
     var listener = context.listener;
     //listener.setOrientation(0,0,-1,0,1,0);
-    listener.setPosition(x,y,z);
+    listener.setPosition(x, y, z);
   };
 
   // ボリューム
@@ -239,16 +240,14 @@ var SoundBox = (function(global){
     var box = new SoundBox(element);
     return new Promise(function(resolve, reject){
       var url = box.sound_url;
-      if(url){
-        MyAudio.loadBuffer(box.sound_url)
-          .then(function(buffer){
-            box.audio = new MyAudio(buffer);
-            resolve(box);
-          })
-        ;
-      }else{
-        reject(Error('not define sound url'));
-      }
+      if(!url) return reject(Error('not define sound url'));
+
+      MyAudio.loadBuffer(box.sound_url)
+        .then(function(buffer){
+          box.audio = new MyAudio(buffer);
+          resolve(box);
+        })
+      ;
     });
   };
   SoundBox.prototype.__defineGetter__('sound_url', function(){
@@ -269,21 +268,30 @@ function onLoadAssets(sound_list){
   var visible_boxes = [];
 
   // 動物divの中心を取得するためにdocumentの幅取得
-  var document_width = document.body.offsetWidth;
-  window.addEventListener('resize', function(){
-    document_width = document.body.offsetWidth;
-  });
+  var bg = document.querySelector('.bg_fixed');
+  var calculateScreen = function(){
+    return {
+      x:document.body.offsetWidth,
+      y:bg.offsetHeight * (parseFloat(bg.style.zoom) || 1),
+    };
+  };
+  window.addEventListener('resize', calculateScreen);
+  var screen = calculateScreen();
 
   // 動物の位置が変わった時に音の位置を再計算
   var updatePosition = function(sound_box){
     var zoom = parseFloat(sound_box.element.style.zoom) || 0;
     var left = sound_box.element.offsetLeft * zoom;
-    var center = left + sound_box.element.offsetWidth * zoom / 2;
+    var center = {
+      x: left + sound_box.element.offsetWidth * zoom / 2,
+      y: left + sound_box.element.offsetHeight * zoom / 2
+    };
 
     var position = {
-      x: center / document_width
+      x: center.x / screen.x,
+      y: center.y / screen.y
     };
-    sound_box.audio.setPosition(position.x * 100, 50, zoom*80);
+    sound_box.audio.setPosition(position.x * 100, (1 - position.y) * 100, zoom * 80);
   };
   // スクロールイベント処理
   var onScroll = function(){
