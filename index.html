@@ -269,14 +269,14 @@ function onLoadAssets(sound_list){
 
   // 動物divの中心を取得するためにdocumentの幅取得
   var bg = document.querySelector('.bg_fixed');
-  var calculateScreen = function(){
+  var calculateScreenSize = function(){
     return {
       x:document.body.offsetWidth,
       y:bg.offsetHeight * (parseFloat(bg.style.zoom) || 1),
     };
   };
-  window.addEventListener('resize', calculateScreen);
-  var screen = calculateScreen();
+  window.addEventListener('resize', calculateScreenSize);
+  var screen = calculateScreenSize();
 
   // 動物の位置が変わった時に音の位置を再計算
   var updatePosition = function(sound_box){
@@ -284,7 +284,7 @@ function onLoadAssets(sound_list){
     var left = sound_box.element.offsetLeft * zoom;
     var center = {
       x: left + sound_box.element.offsetWidth * zoom / 2,
-      y: left + sound_box.element.offsetHeight * zoom / 2
+      y: (sound_box.element.offsetTop * zoom) + sound_box.element.offsetHeight * zoom / 2
     };
 
     var position = {
@@ -339,7 +339,7 @@ function onLoadAssets(sound_list){
   // skrollrでパララックス
   var s = skrollr.init({render:onScroll});
   // 自動再生
-  // s.animateTo(document.body.offsetHeight-screen.y, {duration:45*1000});
+  s.animateTo(document.body.offsetHeight-screen.y, {duration:50*1000});
 }
 
 </script>
