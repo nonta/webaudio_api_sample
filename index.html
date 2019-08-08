@@ -127,7 +127,7 @@ data-23000= "opacity: 1; zoom: 1;  top:0%; right: 0%"
 // sound管理
 var MyAudio = (function(global){
   // web audio api
-  var AudioContext = webkitAudioContext || AudioContext;
+  // var AudioContext = webkitAudioContext || AudioContext;
   var context = new AudioContext();
   // webaudio apiのパラメータ一覧
   // http://www.g200kg.com/jp/docs/webaudio/paramlist.html
@@ -354,15 +354,15 @@ $(function() {
 </script>
 <script>
 $(document).ready(function(){
-    var wW = $(window).width(); 
-    var wH = $(window).height(); 
+    var wW = $(window).width();
+    var wH = $(window).height();
     var divW = $('.img_box').innerWidth();
     var divH = $('.img_box').innerHeight();
     if(wW > divW){
-      $('.img_box').css('width',wW*1.0+'px'); 
+      $('.img_box').css('width',wW*1.0+'px');
     }
     if(wH > divH){
-      $('.img_box').css('height',wH*1.0+'px'); 
+      $('.img_box').css('height',wH*1.0+'px');
     }
 });
 </script>
